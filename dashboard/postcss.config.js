@@ -1,6 +1,13 @@
+// module.exports = {
+//   plugins: [
+//     require('postcss-import'),
+//     require('tailwindcss'),
+//     require('postcss-100vh-fix')
+//   ]
+// }
 module.exports = {
   plugins: {
     tailwindcss: {},
-    autoprefixer: {},
+    autoprefixer: {}
   }
 }

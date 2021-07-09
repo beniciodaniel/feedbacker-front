@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-const Home = () => import('../views/Home/index.vue')
-const Feedbacks = () => import('../views/Feedbacks/index.vue')
-const Credencials = () => import('../views/Credencials/index.vue')
+const Feedbacks = () => import('../views/Feedbacks')
+const Home = () => import('../views/Home')
+const Credentials = () => import('../views/Credentials')
 
-export const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
@@ -19,16 +19,18 @@ export const routes = [
     }
   },
   {
-    path: '/credencials',
-    name: 'Credencials',
-    component: Credencials,
+    path: '/credentials',
+    name: 'Credentials',
+    component: Credentials,
     meta: {
       hasAuth: true
     }
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: { name: 'Home' }
+    redirect: {
+      name: 'Home'
+    }
   }
 ]
 
