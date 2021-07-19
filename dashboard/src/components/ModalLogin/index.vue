@@ -17,7 +17,7 @@
           {{ state.email.errorMessage}}
         </span>
       </label>
-      <label class="block">
+      <label class="block mt-9">
         <span class="text-lg font-medium text-gray-800">Senha</span>
         <input :class="{'border-brand-danger': !!state.password.errorMessage}" v-model="state.password.value" type="password" class="block w-full px-4 py-3 mt-1 text-lg bg-gray-100 border-transparent rounded" placeholder="jane.doe@gmail.com">
         <span v-if="!!state.password.errorMessage" class="block font-medium text-brand-danger">
@@ -34,21 +34,27 @@
 
 <script>
 import { reactive } from 'vue'
+import { useField } from 'vee-validate'
+import { validateEmptyAndLength3, validateEmptyEmail } from '../../utils/validators'
 import useModal from '@/hooks/useModal'
 
 export default {
   setup () {
     const modal = useModal()
+
+    const { value: emailValue, errorMessage: emailErrorMessage } = useField('email', validateEmptyEmail)
+    const { value: passwordValue, errorMessage: passwordErrorMessage } = useField('password', validateEmptyAndLength3)
+
     const state = reactive({
       hasErrors: false,
       isLoading: false,
       email: {
-        value: '',
-        errorMessage: ''
+        value: emailValue,
+        errorMessage: emailErrorMessage
       },
       password: {
-        value: '',
-        errorMessage: ''
+        value: passwordValue,
+        errorMessage: passwordErrorMessage
       }
     })
 
