@@ -27,7 +27,10 @@
 
       <button :disabled="state.isLoading" type="submit" :class="{
         'opacity-50': state.isLoading
-      }" class="px-8 py-3 mt-10 text-2xl font-bold text-white rounded-full bg-brand-main focus:outline-none transition-all duration-150">Entrar</button>
+      }" class="px-8 py-3 mt-10 text-2xl font-bold text-white rounded-full bg-brand-main focus:outline-none transition-all duration-150">
+        <icon v-if="state.isLoading" name="loading" class="animate-spin" />
+        <span v-else>Entrar</span>
+      </button>
     </form>
   </div>
 </template>
@@ -38,10 +41,12 @@ import { useField } from 'vee-validate'
 import { validateEmptyAndLength3, validateEmptyEmail } from '../../utils/validators'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import Icon from '@/components/Icon'
 import services from '@/services'
 import useModal from '@/hooks/useModal'
 
 export default {
+  components: { Icon },
   setup () {
     const router = useRouter()
     const modal = useModal()
