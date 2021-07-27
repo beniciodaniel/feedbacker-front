@@ -17,9 +17,15 @@
       Esta aqui é a sua chave api
     </p>
 
-    <div class="flex py-3 pl-5 mt-2 rounded items-center bg-brand-gray w-1/2 justify-between">
-      <span>{{ store.currentUser.apiKey }}</span>
-      <div class="flex ml-20 mr-2">
+    <content-loader
+      v-if="store.Global.isLoading"
+      class="rounded"
+      width="600px"
+      height="50px"
+     />
+    <div v-else class="flex py-3 pl-5 mt-2 rounded items-center bg-brand-gray w-full lg:w-1/2 justify-between">
+      <span>{{ store.User.currentUser.apiKey }}</span>
+      <div class="flex ml-20 mr-5">
         <icon name='copy' :color="brandColors.graydark" size="24" class="cursor-pointer" />
         <icon name='loading' :color="brandColors.graydark" size="24" class="cursor-pointer ml-3" />
       </div>
@@ -28,8 +34,14 @@
     <p class="mt-5 text-lg text-gray-800 font-regular">
       Coloque o script abaixo no seu site para começar a receber feedbacks
     </p>
-    <div class="py-3 pl-5 pr-20 rounded mt-2 bg-brand-gray w-2/3 overflow-x-scroll">
-      <pre>&lt;script src="https://beniciodaniel-feedbacker-widget.netlify.app?api_key={{store.currentUser.apiKey}}"&gt;&lt;/script&gt;</pre>
+    <content-loader
+      v-if="store.Global.isLoading || state.isLoading"
+      class="rounded"
+      width="600px"
+      height="50px"
+     />
+    <div v-else class="py-3 pl-5 pr-20 rounded mt-2 bg-brand-gray w-full lg:w-2/3 overflow-x-scroll">
+      <pre>&lt;script src="https://beniciodaniel-feedbacker-widget.netlify.app?api_key={{store.User.currentUser.apiKey}}"&gt;&lt;/script&gt;</pre>
     </div>
    </div>
  </div>
@@ -37,17 +49,23 @@
 
 <script>
 import HeaderLogged from '@/components/HeaderLogged'
+import ContentLoader from '@/components/ContentLoader'
 import Icon from '@/components/Icon'
 import useStore from '../../hooks/useStore'
 import palette from '../../../palette'
+import { reactive } from 'vue'
 
 export default {
-  components: { HeaderLogged, Icon },
+  components: { ContentLoader, HeaderLogged, Icon },
   setup () {
-    const store = useStore('User')
+    const store = useStore()
+    const state = reactive({
+      isLoading: false
+    })
 
     return {
       store,
+      state,
       brandColors: palette.brand
     }
   }
