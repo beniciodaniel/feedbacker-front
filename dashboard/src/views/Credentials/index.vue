@@ -24,10 +24,11 @@
       height="50px"
      />
     <div v-else class="flex py-3 pl-5 mt-2 rounded items-center bg-brand-gray w-full lg:w-1/2 justify-between">
-      <span>{{ store.User.currentUser.apiKey }}</span>
-      <div class="flex ml-20 mr-5">
-        <icon name='copy' :color="brandColors.graydark" size="24" class="cursor-pointer" />
-        <icon name='loading' :color="brandColors.graydark" size="24" class="cursor-pointer ml-3" />
+      <span v-if="state.hasError">Erro ao carregar a apikey</span>
+      <span v-else>{{ store.User.currentUser.apiKey }}</span>
+      <div v-if="!state.hasError" class="flex ml-20 mr-5">
+        <icon @click="handleCopy" name='copy' :color="brandColors.graydark" size="24" class="cursor-pointer" />
+        <icon @click="handleGenerateApiKey" name='loading' :color="brandColors.graydark" size="24" class="cursor-pointer ml-3" />
       </div>
     </div>
 
@@ -41,7 +42,8 @@
       height="50px"
      />
     <div v-else class="py-3 pl-5 pr-20 rounded mt-2 bg-brand-gray w-full lg:w-2/3 overflow-x-scroll">
-      <pre>&lt;script src="https://beniciodaniel-feedbacker-widget.netlify.app?api_key={{store.User.currentUser.apiKey}}"&gt;&lt;/script&gt;</pre>
+      <span v-if="state.hasError">Erro ao carregar o script</span>
+      <pre v-else>&lt;script src="https://beniciodaniel-feedbacker-widget.netlify.app?api_key={{store.User.currentUser.apiKey}}"&gt;&lt;/script&gt;</pre>
     </div>
    </div>
  </div>
@@ -53,20 +55,61 @@ import ContentLoader from '@/components/ContentLoader'
 import Icon from '@/components/Icon'
 import useStore from '../../hooks/useStore'
 import palette from '../../../palette'
-import { reactive } from 'vue'
+import services from '../../services'
+import { reactive, watch } from 'vue'
+import { setAPIKey } from '../../store/user'
+import { useToast } from 'vue-toastification'
 
 export default {
   components: { ContentLoader, HeaderLogged, Icon },
   setup () {
     const store = useStore()
+    const toast = useToast()
     const state = reactive({
+      hasError: false,
       isLoading: false
     })
+
+    watch(() => store.User.currentUser, () => {
+      if (!store.Global.isLoading && !store.User.currentUser.apiKey) {
+        handleError(true)
+      }
+    })
+
+    function handleError (error) {
+      state.isLoading = false
+      state.hasError = !!error
+    }
+
+    async function handleGenerateApiKey () {
+      try {
+        state.isLoading = true
+        const { data } = await services.users.generateApiKey()
+        console.log('HANDLE GENERATE: ', data)
+        setAPIKey(data.apiKey)
+
+        state.isLoading = false
+      } catch (error) {
+        handleError(error)
+      }
+    }
+
+    async function handleCopy () {
+      toast.clear()
+      try {
+        await navigator.clipboard.writeText(store.User.currentUser.apiKey)
+        toast.success('Copiado!')
+      } catch (error) {
+        handleError(error)
+      }
+    }
 
     return {
       store,
       state,
-      brandColors: palette.brand
+      brandColors: palette.brand,
+      handleGenerateApiKey,
+      handleCopy
     }
   }
 }
