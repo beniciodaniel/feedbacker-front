@@ -1,4 +1,5 @@
 import AuthService from './auth'
+import FeedbacksService from './feedbacks'
 import UsersService from './users'
 
 import axios from 'axios'
@@ -46,5 +47,6 @@ httpClient.interceptors.response.use((response) => {
 
 export default {
   auth: AuthService(httpClient),
+  feedbacks: FeedbacksService(httpClient),
   users: UsersService(httpClient)
 }

@@ -7,12 +7,35 @@
    <h1 class="text-4xl font-black text-center text-gray-800">Feedbacks</h1>
    <p class="text-lg text-center text-gray-800 font-regular">Detalhes de todos os feedbacks recebidos</p>
  </div>
+
+ <div class="flex justify-center w-full pb-20">
+   <div class="w-4/5 max-w-6xl py-10 grid grid-cols-4 gap-2">
+    <div>
+      <h1 class="text-3xl font-black brand-darkgray">Listagem</h1>
+      <suspense>
+        <template #default>
+          <filters class="mt-8 animate__animated animate__fadeIn animate__faster" />
+        </template>
+        <template #fallback>
+          <filters-loading class="mt-8" />
+        </template>
+      </suspense>
+    </div>
+    <div class="col-span-3 px-10 pt-20">
+
+    </div>
+   </div>
+ </div>
 </template>
 
 <script>
 import HeaderLogged from '../../components/HeaderLogged'
+import Filters from '@/views/Feedbacks/Filters'
+import FiltersLoading from '@/views/Feedbacks/FiltersLoading'
 export default {
   components: {
+    Filters,
+    FiltersLoading,
     HeaderLogged
   }
 }
