@@ -9,7 +9,7 @@ export default httpClient => ({
     if (type) {
       query.type = type
     }
-    const response = await httpClient.get('/feedback', { params: query })
+    const response = await httpClient.get('/feedbacks', { params: query })
     return {
       data: response.data
     }
