@@ -3,9 +3,9 @@ const palette = require('./palette')
 
 module.exports = {
   purge: [
-    './src/**/*/.html',
-    './src/**/*/.vue',
-    './src/**/*/.jsx'
+    // './src/**/*/.html',
+    // './src/**/*/.vue',
+    // './src/**/*/.jsx'
   ],
   presets: [],
   darkMode: false, // or 'media' or 'class'

@@ -42,7 +42,6 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^7.0.0",
     "postcss": "^7",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "~3.9.3",
     "vue-jest": "^5.0.0-0"
   }
