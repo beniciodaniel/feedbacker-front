@@ -4,7 +4,7 @@
   @login="handleLogin"
  />
  <contact/>
- <div class="flex justify-center py-10 bg-brand-gray">
+ <div class="flex justify-center py-10 bg-brand-gray fixed bottom-0 left-0 right-0">
    <p class="font-medium text-center text-gray-800">feedbacker © 2021</p>
  </div>
 </template>
